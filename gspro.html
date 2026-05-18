@@ -867,7 +867,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.52
+          Version 1.56
         </p>
       </div>
     </div>
@@ -888,12 +888,17 @@
         </div>
       </div>
       <div
-        style="width:100%; display:flex; flex-direction:column; justify-content:space-between; flex:1; gap:20px; padding-bottom:20px;">
+        style="width:100%; display:flex; flex-direction:column; gap:30px; align-items:center; padding-bottom:40px;">
         <div
-          style="width:100%; max-width:900px; margin:0 auto; color:#ccc; font-size:25px; line-height:1.6; text-align:center;">
-          OBS Hotkeys are "Main Gspro Info" = Alt+1, "Hitting Box" = Alt+2, "Putting Line" = Alt+3, "Small Fade" =
-          Alt+4, "Med Fade" = Alt+5, "Large Fade" = Alt+6, "Small Draw" = Alt+7, "Med Draw" = Alt+8, "Large Draw" =
-          Alt+9.
+          style="width:100%; max-width:900px; margin:0 auto; text-align:center; display:flex; flex-direction:column; gap:16px;">
+          <p style="color:#fff; font-size:50px; font-weight:700; line-height:1.3; margin:0;">
+            These buttons are for an overhead projector pointing at hitting mat
+          </p>
+          <p style="color:#ccc; font-size:25px; line-height:1.6; margin:0;">
+            OBS Hotkeys are "Main Gspro Info" = Alt+1, "Hitting Box" = Alt+2, "Putting Line" = Alt+3, "Small Fade" =
+            Alt+4, "Med Fade" = Alt+5, "Large Fade" = Alt+6, "Small Draw" = Alt+7, "Med Draw" = Alt+8, "Large Draw" =
+            Alt+9.
+          </p>
         </div>
         <div style="display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:10px; width:100%;">
           <div class="gp-btn gp-blue" onclick="sendObs('Alt+1')">Main Gspro Info</div>
@@ -1100,8 +1105,8 @@
         <div class="gp-grid">
           <div class="gp-btn gp-blue" onclick="sendKey('2')"></div>
           <div class="gp-btn gp-blue" onclick="sendKey('3')"></div>
-          <div class="gp-btn gp-blue" onclick="sendKey('H')">Toggle HUD</div>
-          <div class="gp-btn gp-gray" onclick="goTo('page-hud')">HUD</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('H')">Toggle Mini Map</div>
+          <div class="gp-btn gp-gray" onclick="goTo('page-hud')">MiniMap</div>
         </div>
       </div>
     </div>
@@ -1123,16 +1128,28 @@
       </div>
       <div style="width:100%;">
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('E')">Console Tall</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('R')">Console Short</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('S')">Full Screen</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('T')">Check FPS</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('tab')">Show all keyboard shortcuts</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('escape')">Show UI</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f1')">Clear ball tracers</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f8')">Small console/debug window</div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('V')">Toggle Reflective Water</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('Y')">Decrease Shadow Quality</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('Z')">Increase Shadow Quality</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('J')">Toggle Mute Game</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f9')">Large console/debug window</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('-')">Mute sound</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('+')">Restore sound</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('F')">Cycle FPS/VSync modes</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKey('L')">Lighting & offset settings</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('Z')">Toggle 3D grass</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('B')">Remove camera obstructions</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('N')">Switch left/right handed</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKey(',')">Reduce shadow quality</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('.')">Increase shadow quality</div>
+          <div class="gp-btn gp-gray" style="visibility:hidden;">-</div>
+          <div class="gp-btn gp-gray" style="visibility:hidden;">-</div>
         </div>
       </div>
     </div>
@@ -1263,7 +1280,11 @@
       </div>
       <div class="hud-instruction"><span>🎯 Move aim point and select location</span></div>
       <div class="hud-layout">
-        <div></div>
+        <div style="display:flex; flex-direction:column; gap:12px; height:100%;">
+          <div class="gp-btn gp-blue" onclick="sendKey('S')" style="flex:1; height:auto; min-height:auto; padding:10px !important;">Expand/Shrink Mini-Map</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('Q')" style="flex:1; height:auto; min-height:auto; padding:10px !important;">Zoom Mini-Map In</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('W')" style="flex:1; height:auto; min-height:auto; padding:10px !important;">Zoom Mini-Map Out</div>
+        </div>
         <div class="hudTouchpad">
           <div class="hudCursor"></div>
           <p style="color:#fff;font-size:14px;position:absolute;bottom:8px;width:100%;text-align:center;">👆 Touch &
