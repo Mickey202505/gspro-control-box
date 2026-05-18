@@ -867,7 +867,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.48
+          Version 1.50
         </p>
       </div>
     </div>
@@ -1076,7 +1076,7 @@
         <div class="gp-grid">
           <div class="gp-btn gp-gray" onclick="sendKey('C')">Scorecard</div>
           <div class="gp-btn gp-blue" onclick="sendKey('M')">Mulligan</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('F')">Flyover</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('F')"></div>
           <div class="gp-btn gp-empty"></div>
         </div>
         <div class="gp-grid">
@@ -1095,11 +1095,11 @@
           <div class="gp-btn gp-gray" onclick="goTo('page-clubselection')">Club Selection</div>
           <div class="gp-btn gp-gray" onclick="sendKeySpecial('left')">Aim Left</div>
           <div class="gp-btn gp-gray" onclick="sendKeySpecial('right')">Aim Right</div>
-          <div class="gp-btn gp-gray" onclick="goTo('page-putter')">Putter</div>
+          <div class="gp-btn gp-gray" onclick="goTo('page-putter')"></div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('2')">Camera to Ball</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('3')">Camera Fly to Ball</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('2')"></div>
+          <div class="gp-btn gp-blue" onclick="sendKey('3')"></div>
           <div class="gp-btn gp-blue" onclick="sendKey('H')">Toggle HUD</div>
           <div class="gp-btn gp-gray" onclick="goTo('page-hud')">HUD</div>
         </div>
@@ -1537,7 +1537,15 @@
       alert('Distances mapped successfully!');
     }
 
-    function selectClubFromBag(el, clubRaw, displayStr) { csSelectedClub = clubRaw; document.getElementById('clubDisplayWindow').textContent = clubRaw; document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected')); el.classList.add('cs-selected'); }
+    function selectClubFromBag(el, clubRaw, displayStr) {
+      csSelectedClub = clubRaw;
+      document.getElementById('clubDisplayWindow').textContent = clubRaw;
+      document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected'));
+      el.classList.add('cs-selected');
+      if (clubRaw === 'Putter') {
+        goTo('page-putter');
+      }
+    }
     function clearClubSelection() { csSelectedClub = ''; document.getElementById('clubDisplayWindow').textContent = '—'; document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected')); }
     function getBagArray() {
       let bag = [];
