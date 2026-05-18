@@ -274,10 +274,13 @@
     }
 
     .scan-status-pill {
-      padding: 16px 36px;
-      border-radius: 36px;
-      font-size: 24px;
+      padding: 24px 48px;
+      border-radius: 14px;
+      font-size: 36px;
       font-weight: 700;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
     }
 
     .scan-status-pill.not-connected {
@@ -334,9 +337,9 @@
     }
 
     #scanMsg {
-      font-size: 24px;
+      font-size: 40px;
       font-weight: 600;
-      color: #888;
+      color: #fff;
       text-align: center;
     }
 
@@ -864,7 +867,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.43
+          Version 1.44
         </p>
       </div>
     </div>
@@ -938,7 +941,7 @@
       </div>
       <div
         style="display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:400px; margin-top:24px;">
-        <p style="color:#555; font-size: 20px;">— or enter IP manually —</p>
+        <p style="color:#fff; font-size: 40px;">— or enter IP manually —</p>
         <input id="manualIP" type="text" placeholder="192.168.0.89">
         <div class="conn-btn" onclick="connectManual()" style="width:100%;">Connect</div>
       </div>
