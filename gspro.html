@@ -274,9 +274,9 @@
     }
 
     .scan-status-pill {
-      padding: 12px 28px;
+      padding: 16px 36px;
       border-radius: 36px;
-      font-size: 16px;
+      font-size: 24px;
       font-weight: 700;
     }
 
@@ -294,8 +294,8 @@
 
     #videoContainer {
       position: relative;
-      width: 340px;
-      height: 260px;
+      width: 400px;
+      height: 300px;
       border: 2px solid #7F77DD;
       border-radius: 14px;
       overflow: hidden;
@@ -342,8 +342,8 @@
       background: #1a1a1a;
       border: 1px solid #444;
       border-radius: 10px;
-      padding: 12px;
-      font-size: 18px;
+      padding: 20px;
+      font-size: 26px;
       color: #fff;
       width: 100%;
       text-align: center;
@@ -862,7 +862,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.41
+          Version 1.42
         </p>
       </div>
     </div>
@@ -920,7 +920,7 @@
           <span id="connLabel" class="disconnected">Not Connected</span>
         </div>
       </div>
-      <div class="scan-box">
+      <div class="scan-box" style="max-width: 500px;">
         <div id="connStatusPill" class="scan-status-pill not-connected">Not Connected</div>
         <div id="videoContainer">
           <video id="video" autoplay playsinline muted></video>
@@ -928,13 +928,15 @@
           <div class="scan-line"></div>
         </div>
         <p id="scanMsg">Point camera at PC QR code</p>
-        <div class="conn-btn" id="scanBtn" onclick="startScan()">Scan QR to Connect</div>
-        <div class="conn-btn" id="cancelScanBtn" onclick="stopScan()" style="display:none;">Cancel Scan</div>
-        <div class="conn-btn" id="disconnectBtn" onclick="disconnectFromPC()" style="display:none;">Disconnect</div>
+        <div style="margin-top: 40px; width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px;">
+          <div class="conn-btn" id="scanBtn" onclick="startScan()" style="width:100%;">Scan QR to Connect</div>
+          <div class="conn-btn" id="cancelScanBtn" onclick="stopScan()" style="display:none; width:100%;">Cancel Scan</div>
+          <div class="conn-btn" id="disconnectBtn" onclick="disconnectFromPC()" style="display:none; width:100%;">Disconnect</div>
+        </div>
       </div>
       <div
-        style="display:flex; flex-direction:column; align-items:center; gap:8px; width:100%; max-width:340px; margin-top:16px;">
-        <p style="color:#555;">— or enter IP manually —</p>
+        style="display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:400px; margin-top:24px;">
+        <p style="color:#555; font-size: 20px;">— or enter IP manually —</p>
         <input id="manualIP" type="text" placeholder="192.168.0.89">
         <div class="conn-btn" onclick="connectManual()" style="width:100%;">Connect</div>
       </div>
