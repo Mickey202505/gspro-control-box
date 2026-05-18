@@ -867,7 +867,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.50
+          Version 1.52
         </p>
       </div>
     </div>
@@ -1224,8 +1224,9 @@
           <div class="gp-btn gp-blue" onclick="sendKey('K')">Heatmap</div>
           <div class="gp-btn gp-blue" onclick="sendKey('N')">Green Grid</div>
           <div class="gp-btn gp-blue" onclick="sendKey('L')">Green Dots</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('I')">Increase Dist</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('D')">Decrease Dist</div>
+          <div class="gp-btn gp-empty" style="visibility:hidden;"></div>
+          <div class="gp-btn gp-blue" onclick="sendKey('I')">Aim Down</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('D')">Aim Up</div>
           <div class="gp-btn gp-blue" onclick="sendKeySpecial('left')">Aim Left</div>
           <div class="gp-btn gp-blue" onclick="sendKeySpecial('right')">Aim Right</div>
           <div class="gp-btn gp-gray" style="visibility:hidden;">-</div>
@@ -1543,6 +1544,7 @@
       document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected'));
       el.classList.add('cs-selected');
       if (clubRaw === 'Putter') {
+        sendKey('U');
         goTo('page-putter');
       }
     }
