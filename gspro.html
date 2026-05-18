@@ -337,7 +337,7 @@
     }
 
     #scanMsg {
-      font-size: 30px;
+      font-size: 24px;
       font-weight: 600;
       color: #fff;
       text-align: center;
@@ -867,7 +867,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.46
+          Version 1.48
         </p>
       </div>
     </div>
@@ -941,7 +941,7 @@
       </div>
       <div
         style="display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:400px; margin-top:24px;">
-        <p style="color:#fff; font-size: 30px;">— or enter IP manually —</p>
+        <p style="color:#fff; font-size: 24px;">— or enter IP manually —</p>
         <input id="manualIP" type="text" placeholder="192.168.0.89">
         <div class="conn-btn" onclick="connectManual()" style="width:100%;">Connect</div>
       </div>
@@ -1356,8 +1356,8 @@
         pill.textContent = connected ? ('Connected: ' + ip) : 'Not Connected';
         pill.className = connected ? 'scan-status-pill connected' : 'scan-status-pill not-connected';
       }
-      if (scanBtn) scanBtn.style.display = connected ? 'none' : 'inline-block';
-      if (discBtn) discBtn.style.display = connected ? 'inline-block' : 'none';
+      if (scanBtn) scanBtn.style.display = connected ? 'none' : 'flex';
+      if (discBtn) discBtn.style.display = connected ? 'flex' : 'none';
       updateAllConnectionIndicators(connected, ip);
     }
 
