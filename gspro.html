@@ -207,11 +207,11 @@
 
     .welcome-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 24px;
       justify-content: center;
       width: 100%;
-      max-width: 1400px;
+      max-width: 1964px;
       margin-top: 40px;
     }
 
@@ -233,12 +233,12 @@
     }
 
     .welcome-btn {
-      font-size: 80px;
+      font-size: 60px;
     }
 
     #page-welcome .welcome-btn {
-      min-height: 210px;
-      height: 210px;
+      min-height: 220px;
+      height: 220px;
       padding: 0 20px;
       display: flex;
       align-items: center;
@@ -653,7 +653,9 @@
       transform: none;
     }
 
-    #page-gameplay .gp-btn {
+    #page-gameplay .gp-btn,
+    #page-camera .gp-btn,
+    #page-rangefinder .gp-btn {
       padding-top: 58px;
       padding-bottom: 58px;
       line-height: 1.02;
@@ -827,6 +829,14 @@
       overflow-wrap: anywhere;
       text-overflow: clip;
     }
+
+    .practice-layout {
+      display: grid;
+      grid-template-columns: 1fr 3fr 1fr;
+      gap: 12px;
+      width: 100%;
+      align-items: start;
+    }
   </style>
 </head>
 
@@ -859,6 +869,7 @@
         <div class="welcome-btn" onclick="goTo('page-gameplay')">Game<br>Play</div>
         <div class="welcome-btn" onclick="goTo('page-bagmapping')">Bag Mapping</div>
         <div class="welcome-btn" onclick="goTo('page-practice')">Practice</div>
+        <div class="welcome-btn" onclick="goTo('page-environment')">Environment</div>
         <div class="welcome-btn quit-btn" onclick="quitApp()">Quit</div>
         <div class="welcome-btn" onclick="goTo('page-settings')">Connect<br>to PC</div>
         <div class="welcome-btn" onclick="goTo('page-obs')">OBS</div>
@@ -867,7 +878,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.56
+          Version 1.76
         </p>
       </div>
     </div>
@@ -1044,20 +1055,100 @@
             <path d="M64 23 L36 41 L64 59" stroke="#1a1a1a" stroke-width="6" fill="none" />
           </svg>
         </div>
-        <div id="connIndicator">
+        <div id="connIndicator" onclick="goTo('page-settings')">
           <div id="connDot" class="disconnected"></div><span id="connLabel" class="disconnected">Not Connected</span>
         </div>
       </div>
       <div class="hud-instruction"><span>🎯 Move aim point and select location</span></div>
-      <div class="hud-layout">
-        <div></div>
+      <div class="practice-layout">
+        <!-- Left Column -->
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="gp-btn gp-gray" onclick="goTo('page-practiceclubselection')" style="flex-direction:column; justify-content:center; gap:4px;">
+            <div style="font-size:50px; line-height:1.1;">Select Club</div>
+            <div id="practiceSelectedClubText" style="font-size:50px; font-weight:800; color:#EF9F27; line-height:1.1;"></div>
+          </div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('up')">Aim Farther</div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('down')">Aim Closer</div>
+        </div>
+
+        <!-- Center Column (Touchpad) -->
         <div class="hudTouchpad">
           <div class="hudCursor"></div>
-          <p style="color:#fff;font-size:14px;position:absolute;bottom:8px;width:100%;text-align:center;">👆 Touch &
-            drag</p>
+          <p style="color:#fff;font-size:20px;position:absolute;bottom:12px;width:100%;text-align:center;font-weight:bold;">👆 Touch & drag to control cursor</p>
         </div>
-        <div>
-          <div class="gp-btn gp-gray" onclick="sendHudClick()" style="padding:14px 18px;">Select Location</div>
+
+        <!-- Right Column -->
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <div class="gp-btn gp-blue" onclick="sendPracticeClick('left')">Left Click</div>
+          <div class="gp-btn gp-blue" onclick="sendPracticeClick('right')">Right Click</div>
+          <div class="gp-btn gp-empty" style="visibility:hidden;"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRACTICE CLUB SELECTION PAGE -->
+    <div class="page" id="page-practiceclubselection">
+      <div class="page-topbar">
+        <div class="back-arrow" onclick="goBack()">
+          <svg viewBox="0 0 208 82">
+            <rect x="4" y="3" width="200" height="76" rx="20" fill="#d4d4d4" />
+            <rect x="4" y="3" width="200" height="4.5" fill="#efefef" />
+            <rect x="4" y="3" width="6" height="76" fill="#efefef" />
+            <path d="M64 23 L36 41 L64 59" stroke="#1a1a1a" stroke-width="6" fill="none" />
+          </svg>
+        </div>
+        <div id="connIndicator" onclick="goTo('page-settings')">
+          <div id="connDot" class="disconnected"></div><span id="connLabel" class="disconnected">Not Connected</span>
+        </div>
+      </div>
+      <div class="club-selection-wrapper">
+        <div class="club-selection-left">
+          <div class="club-display-wrapper">
+            <div class="club-display-card" id="practiceCopyDisplayWindow">—</div>
+            <div class="club-action-card">
+              <div class="gp-btn gp-gray" style="width:100%;" onclick="clearClubSelection()">Clear Club</div>
+            </div>
+          </div>
+          <div class="club-action-row">
+            <div class="gp-btn gp-blue" style="flex:1;" onclick="clubUp()">▲ Club Up</div>
+            <div class="gp-btn gp-blue" style="flex:2;" onclick="syncBagToGspro()">Sync bag to GSPro</div>
+            <div class="gp-btn gp-blue" style="flex:1;" onclick="clubDown()">▼ Club Down</div>
+          </div>
+          <div class="club-action-row" style="margin-bottom:12px;">
+            <div class="gp-btn gp-blue" style="flex:1.4;" onclick="sendSelectedClub()">Select Club</div>
+          </div>
+          <div class="club-info-text">💡 To sync with GsPro select the club GsPro is displaying or tap club up or down until the same as GsPro then Sync Bag to GsPro.<br>Once bag is synced with GsPro just select the club you want to use for this shot.</div>
+        </div>
+        <div class="club-selection-right" style="display:flex; flex-direction:column; align-items:center;">
+          <div id="practiceClubSelectBagUnitLabel" style="position: absolute; top: -70px; text-align: center; width: 100%; font-size: 44px; font-weight: 700; color: #EF9F27; display: none;">Distance in Yds</div>
+          <div class="golf-bag" id="practiceClubSelectBag">
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="1"></div>
+            </div>
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="2"></div>
+              <div class="slot cs-slot" data-slot="3"></div>
+              <div class="slot cs-slot" data-slot="4"></div>
+            </div>
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="5"></div>
+              <div class="slot cs-slot" data-slot="6"></div>
+              <div class="slot cs-slot" data-slot="7"></div>
+            </div>
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="8"></div>
+              <div class="slot cs-slot" data-slot="9"></div>
+              <div class="slot cs-slot" data-slot="10"></div>
+            </div>
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="11"></div>
+              <div class="slot cs-slot" data-slot="12"></div>
+              <div class="slot cs-slot" data-slot="13"></div>
+            </div>
+            <div class="slot-row">
+              <div class="slot cs-slot" data-slot="14"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -1079,34 +1170,126 @@
       </div>
       <div style="width:100%;">
         <div class="gp-grid">
-          <div class="gp-btn gp-gray" onclick="sendKey('C')">Scorecard</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('M')">Mulligan</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('F')"></div>
-          <div class="gp-btn gp-empty"></div>
-        </div>
-        <div class="gp-grid">
-          <div class="gp-btn gp-empty"></div>
-          <div class="gp-btn gp-gray" onclick="sendKey('Q')">Last Tee Box</div>
-          <div class="gp-btn gp-gray" onclick="sendKey('G')">Next Tee Box</div>
-          <div class="gp-btn gp-gray" onclick="goTo('page-environment')">Environment</div>
-        </div>
-        <div class="gp-grid">
-          <div class="gp-btn gp-empty"></div>
-          <div class="gp-btn gp-blue" onclick="sendKey('A')">Tee Box Aim Left</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('B')">Tee Box Aim Right</div>
-          <div class="gp-btn gp-empty"></div>
-        </div>
-        <div class="gp-grid">
           <div class="gp-btn gp-gray" onclick="goTo('page-clubselection')">Club Selection</div>
-          <div class="gp-btn gp-gray" onclick="sendKeySpecial('left')">Aim Left</div>
-          <div class="gp-btn gp-gray" onclick="sendKeySpecial('right')">Aim Right</div>
-          <div class="gp-btn gp-gray" onclick="goTo('page-putter')"></div>
+          <div class="gp-btn gp-gray" onclick="goTo('page-putter'); sendKey('U')">Putter</div>
+          <div class="gp-btn gp-gray" onclick="goTo('page-camera')">Camera</div>
+          <div class="gp-btn gp-gray" onclick="goTo('page-hud')">Mini Map</div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('2')"></div>
-          <div class="gp-btn gp-blue" onclick="sendKey('3')"></div>
-          <div class="gp-btn gp-blue" onclick="sendKey('H')">Toggle Mini Map</div>
-          <div class="gp-btn gp-gray" onclick="goTo('page-hud')">MiniMap</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('T')">Move Tee Left</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('V')">Move Tee Right</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('A')">Reset Aim</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('S')">Mini Map Large/Small</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKey('ctrl+m')">Mulligan</div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('left')">Aim Left</div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('right')">Aim Right</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f3')">Look at<br>Landing Area</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKey('space')">Fast Forward Ball</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('R'); goTo('page-rangefinder')">Range Finder</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('P')">Toggle Pin<br>Indicator</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('J')">Shot Cam</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CAMERA PAGE -->
+    <div class="page" id="page-camera">
+      <div class="page-topbar">
+        <div class="back-arrow" onclick="goBack()">
+          <svg viewBox="0 0 208 82">
+            <rect x="4" y="3" width="200" height="76" rx="20" fill="#d4d4d4" />
+            <rect x="4" y="3" width="200" height="4.5" fill="#efefef" />
+            <rect x="4" y="3" width="6" height="76" fill="#efefef" />
+            <path d="M64 23 L36 41 L64 59" stroke="#1a1a1a" stroke-width="6" fill="none" />
+          </svg>
+        </div>
+        <div id="connIndicator" onclick="goTo('page-settings')">
+          <div id="connDot" class="disconnected"></div><span id="connLabel" class="disconnected">Not Connected</span>
+        </div>
+      </div>
+      <div style="width:100%;">
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKey('5')">Snap camera back to ball</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('6')">Fly camera to ball</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('O')">Hole flyover</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f5')">Free-look fly camera</div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RANGE FINDER PAGE -->
+    <div class="page" id="page-rangefinder">
+      <div class="page-topbar">
+        <div class="back-arrow" onclick="goBack()">
+          <svg viewBox="0 0 208 82">
+            <rect x="4" y="3" width="200" height="76" rx="20" fill="#d4d4d4" />
+            <rect x="4" y="3" width="200" height="4.5" fill="#efefef" />
+            <rect x="4" y="3" width="6" height="76" fill="#efefef" />
+            <path d="M64 23 L36 41 L64 59" stroke="#1a1a1a" stroke-width="6" fill="none" />
+          </svg>
+        </div>
+        <div id="connIndicator" onclick="goTo('page-settings')">
+          <div id="connDot" class="disconnected"></div><span id="connLabel" class="disconnected">Not Connected</span>
+        </div>
+      </div>
+      <div style="width:100%;">
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('up')">Aim Up</div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('left')">Aim Left</div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('right')">Aim Right</div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-blue" onclick="sendKeySpecial('down')">Aim Down</div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+        </div>
+        <div class="gp-grid">
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
+          <div class="gp-btn gp-empty"></div>
         </div>
       </div>
     </div>
@@ -1128,28 +1311,28 @@
       </div>
       <div style="width:100%;">
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('tab')">Show all keyboard shortcuts</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('tab')">Keyboard Shortcuts</div>
           <div class="gp-btn gp-blue" onclick="sendKey('escape')">Show UI</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('f1')">Clear ball tracers</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('f8')">Small console/debug window</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f1')">Clear Ball Tracers</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('F')">FPS/VSync Modes</div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('f9')">Large console/debug window</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('-')">Mute sound</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('+')">Restore sound</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('F')">Cycle FPS/VSync modes</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f8')">Small Console</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('f9')">Large Console</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('L')">Lighting &amp; Offset</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('B')">Remove Obstructions</div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey('L')">Lighting & offset settings</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('Z')">Toggle 3D grass</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('B')">Remove camera obstructions</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('N')">Switch left/right handed</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('-')">Mute Sound</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('+')">Restore Sound</div>
+          <div class="gp-btn gp-blue" onclick="sendKey(',')">Reduce Shadow</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('Z')">Toggle 3D Grass</div>
         </div>
         <div class="gp-grid">
-          <div class="gp-btn gp-blue" onclick="sendKey(',')">Reduce shadow quality</div>
-          <div class="gp-btn gp-blue" onclick="sendKey('.')">Increase shadow quality</div>
-          <div class="gp-btn gp-gray" style="visibility:hidden;">-</div>
-          <div class="gp-btn gp-gray" style="visibility:hidden;">-</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('N')">Left/Right Handed</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('H')">Hide/show Interface</div>
+          <div class="gp-btn gp-blue" onclick="sendKey('.')">Increase Shadow</div>
+          <div class="gp-btn gp-empty" style="visibility:hidden;"></div>
         </div>
       </div>
     </div>
@@ -1329,6 +1512,26 @@
     </div>
   </div>
 
+  <!-- ANNIVERSARY ANNOUNCEMENT MODAL -->
+  <div id="anniversaryModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); z-index:10005; flex-direction:column; align-items:center; justify-content:center; padding:20px;">
+    <div style="background:rgba(26,26,46,0.85); border:2.5px solid #EF9F27; border-radius:24px; padding:40px 30px; width:100%; max-width:560px; text-align:center; box-shadow:0 12px 40px rgba(0,0,0,0.5); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);">
+      <div style="font-size:70px; margin-bottom:15px; color:#EF9F27; line-height:1; animation: pulseStar 2s infinite ease-in-out;">⭐</div>
+      <h2 id="anniversaryModalTitle" style="font-size:38px; font-weight:700; margin-bottom:20px; color:#fff; background:linear-gradient(45deg, #fff, #EF9F27); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">Happy 1-Year Anniversary!</h2>
+      <p id="anniversaryModalBody" style="font-size:24px; line-height:1.5; margin-bottom:30px; color:#e0e0e0; font-weight:300; padding:0 10px;"></p>
+      <div style="display:flex; flex-direction:column; gap:12px; width:100%;">
+        <a id="anniversarySupportBtn" href="#" target="_blank" class="gp-btn gp-blue" style="width:100%; font-size:26px; font-weight:700; display:flex; align-items:center; justify-content:center; text-decoration:none; padding:18px 0; border-radius:12px; transition:all 0.2s;">Support Developer</a>
+        <div class="gp-btn gp-gray" style="width:100%; font-size:24px; padding:16px 0; border-radius:12px;" onclick="closeAnniversaryModal()">Close</div>
+      </div>
+    </div>
+  </div>
+  
+  <style>
+    @keyframes pulseStar {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px #EF9F27); }
+      50% { transform: scale(1.15); filter: drop-shadow(0 0 15px #EF9F27); }
+    }
+  </style>
+
   <script>
     let ws = null, pingTimer = null, videoStream = null, scanTimer = null;
     let csSelectedClub = '', chosenClub = '', nextSlot = 1, syncedClubIndex = null;
@@ -1389,6 +1592,32 @@
     function sendObs(key) { if (!ws || ws.readyState !== WebSocket.OPEN) return; sendToPC({ type: 'obs', action: key, focusApp: 'OBS.exe', sourceApp: 'gspro' }); }
     function sendHudClick() { if (!ws || ws.readyState !== WebSocket.OPEN) return; sendToPC({ type: 'hud_click', focusApp: 'gspro' }); }
 
+    function closeAnniversaryModal() {
+      document.getElementById('anniversaryModal').style.display = 'none';
+      localStorage.setItem('anniversary_notified_year', new Date().getFullYear().toString());
+    }
+
+    function showAnniversaryModal(title, message, buttonText, url) {
+      const currentYear = new Date().getFullYear().toString();
+      if (localStorage.getItem('anniversary_notified_year') === currentYear) {
+        return;
+      }
+      
+      document.getElementById('anniversaryModalTitle').textContent = title || "Happy 1-Year Anniversary!";
+      document.getElementById('anniversaryModalBody').textContent = message || "";
+      
+      const supportBtn = document.getElementById('anniversarySupportBtn');
+      if (url) {
+        supportBtn.style.display = 'flex';
+        supportBtn.href = url;
+        supportBtn.textContent = buttonText || 'Support Developer';
+      } else {
+        supportBtn.style.display = 'none';
+      }
+      
+      document.getElementById('anniversaryModal').style.display = 'flex';
+    }
+
     function connectWS(url) {
       if (ws) {
         try { ws.close(); } catch (e) { }
@@ -1398,6 +1627,16 @@
       ws.onopen = () => {
         updateConnectBtn(true, url.split(':')[1]?.split('/')[0]);
         startPing();
+      };
+      ws.onmessage = (event) => {
+        try {
+          const data = JSON.parse(event.data);
+          if (data.type === 'license_announcement') {
+            showAnniversaryModal(data.title, data.message, data.button_text, data.url);
+          }
+        } catch (e) {
+          console.error("Error parsing WebSocket message:", e);
+        }
       };
       ws.onclose = () => {
         updateConnectBtn(false, null);
@@ -1469,6 +1708,7 @@
     function reloadAllBags(mapping) {
       document.querySelectorAll('#golfBag .slot').forEach(s => { s.textContent = ''; s.classList.remove('assigned'); });
       document.querySelectorAll('#clubSelectBag .cs-slot').forEach(s => { s.textContent = ''; s.classList.remove('assigned', 'cs-selected'); s.onclick = null; });
+      document.querySelectorAll('#practiceClubSelectBag .cs-slot').forEach(s => { s.textContent = ''; s.classList.remove('assigned', 'cs-selected'); s.onclick = null; });
       
       let highest = 0;
       let foundUnit = null;
@@ -1498,18 +1738,28 @@
           el.classList.add('assigned'); 
           el.onclick = function () { selectClubFromBag(el, clubName, displayStr); }; 
         }
+
+        const elPractice = document.querySelector('#practiceClubSelectBag [data-slot="' + slot + '"]');
+        if (elPractice && clubName) { 
+          elPractice.innerHTML = displayHtml; 
+          elPractice.classList.add('assigned'); 
+          elPractice.onclick = function () { selectPracticeClubFromBag(elPractice, clubName, displayStr); }; 
+        }
         if (parseInt(slot) > highest) highest = parseInt(slot);
       });
       
       const unitLabel = document.getElementById('bagUnitLabel');
       const csUnitLabel = document.getElementById('clubSelectBagUnitLabel');
+      const csPracticeUnitLabel = document.getElementById('practiceClubSelectBagUnitLabel');
       
       if (foundUnit) {
         if (unitLabel) { unitLabel.textContent = 'Distance in ' + foundUnit; unitLabel.style.display = 'block'; }
         if (csUnitLabel) { csUnitLabel.textContent = 'Distance in ' + foundUnit; csUnitLabel.style.display = 'block'; }
+        if (csPracticeUnitLabel) { csPracticeUnitLabel.textContent = 'Distance in ' + foundUnit; csPracticeUnitLabel.style.display = 'block'; }
       } else {
         if (unitLabel) unitLabel.style.display = 'none';
         if (csUnitLabel) csUnitLabel.style.display = 'none';
+        if (csPracticeUnitLabel) csPracticeUnitLabel.style.display = 'none';
       }
       
       nextSlot = highest + 1;
@@ -1559,17 +1809,45 @@
       alert('Distances mapped successfully!');
     }
 
+    function updateClubDisplays() {
+      const displayWin = document.getElementById('clubDisplayWindow');
+      if (displayWin) displayWin.textContent = csSelectedClub || '—';
+      
+      const practiceText = document.getElementById('practiceSelectedClubText');
+      if (practiceText) practiceText.textContent = csSelectedClub || '';
+
+      const practiceCopyText = document.getElementById('practiceCopyDisplayWindow');
+      if (practiceCopyText) practiceCopyText.textContent = csSelectedClub || '—';
+    }
+
     function selectClubFromBag(el, clubRaw, displayStr) {
       csSelectedClub = clubRaw;
-      document.getElementById('clubDisplayWindow').textContent = clubRaw;
-      document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected'));
+      document.querySelectorAll('#clubSelectBag .cs-slot').forEach(s => s.classList.remove('cs-selected'));
       el.classList.add('cs-selected');
+      updateClubDisplays();
       if (clubRaw === 'Putter') {
         sendKey('U');
         goTo('page-putter');
       }
     }
-    function clearClubSelection() { csSelectedClub = ''; document.getElementById('clubDisplayWindow').textContent = '—'; document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected')); }
+
+    function selectPracticeClubFromBag(el, clubRaw, displayStr) {
+      csSelectedClub = clubRaw;
+      document.querySelectorAll('#practiceClubSelectBag .cs-slot').forEach(s => s.classList.remove('cs-selected'));
+      el.classList.add('cs-selected');
+      updateClubDisplays();
+      if (clubRaw === 'Putter') {
+        sendKey('U');
+        goTo('page-putter');
+      }
+    }
+
+    function clearClubSelection() { 
+      csSelectedClub = ''; 
+      document.querySelectorAll('.cs-slot').forEach(s => s.classList.remove('cs-selected')); 
+      updateClubDisplays();
+    }
+
     function getBagArray() {
       let bag = [];
       for (let i = 1; i <= 14; i++) {
@@ -1598,6 +1876,7 @@
         if (count >= presses) {
           clearInterval(interval);
           syncedClubIndex = targetIdx;
+          updateClubDisplays();
         } else {
           sendKey(keyToSend);
           count++;
@@ -1609,7 +1888,11 @@
       sendKey('I');
       if (syncedClubIndex !== null) {
         let bag = getBagArray();
-        if (bag.length > 0) syncedClubIndex = (syncedClubIndex - 1 + bag.length) % bag.length;
+        if (bag.length > 0) {
+          syncedClubIndex = (syncedClubIndex - 1 + bag.length) % bag.length;
+          csSelectedClub = bag[syncedClubIndex];
+          updateClubDisplays();
+        }
       }
     }
 
@@ -1624,6 +1907,7 @@
         syncedClubIndex = idx;
         sendToPC({ type: 'club_control', action: 'sync_bag', focusApp: 'gspro' });
         customAlert("Club Selection now Synced with Gspro", "ControlBox 365 now knows GSPro is on " + csSelectedClub);
+        updateClubDisplays();
       }
     }
 
@@ -1631,9 +1915,19 @@
       sendKey('K');
       if (syncedClubIndex !== null) {
         let bag = getBagArray();
-        if (bag.length > 0) syncedClubIndex = (syncedClubIndex + 1) % bag.length;
+        if (bag.length > 0) {
+          syncedClubIndex = (syncedClubIndex + 1) % bag.length;
+          csSelectedClub = bag[syncedClubIndex];
+          updateClubDisplays();
+        }
       }
     }
+
+    function sendPracticeClick(btn) {
+      if (!ws || ws.readyState !== WebSocket.OPEN) return;
+      sendToPC({ type: 'hud_click', button: btn, focusApp: 'gspro' });
+    }
+
     function loadClubSelectBag() { reloadAllBags(currentBagMapping); }
 
     (function () { function initTouchpad() { document.querySelectorAll('.hudTouchpad').forEach(pad => { let touching = false, lastX = null, lastY = null; const cursor = pad.querySelector('.hudCursor'); if (!cursor) return; function moveCursor(x, y) { const rect = pad.getBoundingClientRect(); const px = Math.max(8, Math.min(rect.width - 8, x - rect.left)); const py = Math.max(8, Math.min(rect.height - 8, y - rect.top)); cursor.style.left = px + 'px'; cursor.style.top = py + 'px'; } function sendMove(dx, dy) { sendToPC({ type: 'hud_mouse_move', dx: Math.round(dx * 3), dy: Math.round(dy * 3) }); } pad.addEventListener('touchstart', e => { e.preventDefault(); touching = true; lastX = e.touches[0].clientX; lastY = e.touches[0].clientY; moveCursor(lastX, lastY); }); pad.addEventListener('touchmove', e => { if (!touching) return; e.preventDefault(); const x = e.touches[0].clientX; const y = e.touches[0].clientY; sendMove(x - lastX, y - lastY); moveCursor(x, y); lastX = x; lastY = y; }); pad.addEventListener('touchend', () => { touching = false; }); }); } window.addEventListener('load', initTouchpad); })();
@@ -1646,7 +1940,7 @@
       }
     });
 
-    function goTo(pageId) { const cur = document.querySelector('.page.active'); navHistory.push(cur.id); cur.classList.remove('active'); document.getElementById(pageId).classList.add('active'); if (pageId === 'page-clubselection') loadClubSelectBag(); }
+    function goTo(pageId) { const cur = document.querySelector('.page.active'); navHistory.push(cur.id); cur.classList.remove('active'); document.getElementById(pageId).classList.add('active'); if (pageId === 'page-clubselection' || pageId === 'page-practiceclubselection') loadClubSelectBag(); }
     function goBack() { if (!navHistory.length) return; document.querySelector('.page.active').classList.remove('active'); document.getElementById(navHistory.pop()).classList.add('active'); }
     function testButton() { alert('Test button pressed'); }
     function quitApp() { 
