@@ -878,7 +878,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.76
+          Version 1.77
         </p>
       </div>
     </div>
@@ -1533,7 +1533,7 @@
   </style>
 
   <script>
-    let ws = null, pingTimer = null, videoStream = null, scanTimer = null;
+    let ws = null, pingTimer = null, videoStream = null, scanTimer = null, isSyncing = false;
     let csSelectedClub = '', chosenClub = '', nextSlot = 1, syncedClubIndex = null;
     let currentBagMapping = {};
     function customAlert(title, body) {
@@ -1860,6 +1860,7 @@
     }
 
     function sendSelectedClub() {
+      if (isSyncing) return;
       if (!csSelectedClub) { alert('Tap a club from the bag first'); return; }
       if (syncedClubIndex === null) { alert('Please tap the club that GSPro is currently on, then click "Sync bag to GSPro" first.'); return; }
       let bag = getBagArray();
@@ -1871,10 +1872,13 @@
       let iPresses = (syncedClubIndex - targetIdx + n) % n;
       let keyToSend = (kPresses <= iPresses) ? 'K' : 'I';
       let presses = Math.min(kPresses, iPresses);
+      
+      isSyncing = true;
       let count = 0;
       let interval = setInterval(() => {
         if (count >= presses) {
           clearInterval(interval);
+          isSyncing = false;
           syncedClubIndex = targetIdx;
           updateClubDisplays();
         } else {
@@ -1885,6 +1889,7 @@
     }
 
     function clubUp() { 
+      if (isSyncing) return;
       sendKey('I');
       if (syncedClubIndex !== null) {
         let bag = getBagArray();
@@ -1912,6 +1917,7 @@
     }
 
     function clubDown() { 
+      if (isSyncing) return;
       sendKey('K');
       if (syncedClubIndex !== null) {
         let bag = getBagArray();
