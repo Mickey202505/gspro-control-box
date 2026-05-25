@@ -878,7 +878,7 @@
         <p style="font-size: 40px; color: #fff; line-height: 1.3; font-weight: 600;">
           Created by Mickeyf<br>
           email: controlbox365@outlook.com<br>
-          Version 1.00
+          Version 1.02
         </p>
       </div>
     </div>
@@ -1616,6 +1616,26 @@
       document.getElementById('anniversaryModal').style.display = 'flex';
     }
 
+    function showGeneralMessageModal(data) {
+      const messageId = data.id || 'default';
+      if (localStorage.getItem('seen_msg_' + messageId)) return;
+
+      document.getElementById('anniversaryModalTitle').textContent = data.title || "Update";
+      document.getElementById('anniversaryModalBody').textContent = data.message || "";
+      
+      const supportBtn = document.getElementById('anniversarySupportBtn');
+      if (data.url) {
+        supportBtn.style.display = 'flex';
+        supportBtn.href = data.url;
+        supportBtn.textContent = data.button_text || 'Learn More';
+      } else {
+        supportBtn.style.display = 'none';
+      }
+      
+      localStorage.setItem('seen_msg_' + messageId, 'true');
+      document.getElementById('anniversaryModal').style.display = 'flex';
+    }
+
     function connectWS(url) {
       if (ws) {
         try { ws.close(); } catch (e) { }
@@ -1631,6 +1651,9 @@
           const data = JSON.parse(event.data);
           if (data.type === 'license_announcement') {
             showAnniversaryModal(data.title, data.message, data.button_text, data.url);
+          }
+          if (data.type === 'dev_message') {
+            showGeneralMessageModal(data);
           }
         } catch (e) {
           console.error("Error parsing WebSocket message:", e);
@@ -1949,11 +1972,12 @@
     function testButton() { alert('Test button pressed'); }
     function quitApp() { 
       if (confirm('Quit GSPro?')) { 
-        window.open('', '_self', ''); 
-        window.close(); 
-        setTimeout(function() { 
+        sendToPC({ type: 'quit_server' });
+        setTimeout(() => {
+          window.open('', '_self', ''); 
+          window.close(); 
           window.location.href = "about:blank"; 
-        }, 300); 
+        }, 500);
       } 
     }
   </script>
