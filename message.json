@@ -1,0 +1,13 @@
+{
+  "anniversary": {
+    "title": "Happy Anniversary!",
+    "message": "You have been using GSPro Control Box 365 for a full year! I hope it has improved your sim experience. If you'd like to support the continued development, click the ‘Buy Me a Coffee Button’ below.",
+    "button_text": "Buy me a Coffee",
+    "url": "https://www.buymeacoffee.com/mickeyf"
+  },
+  "update": {
+    "id": "update_v1_05",
+    "title": "Version 1.05 is live!",
+    "message": "The Control Box interface has been updated to 1.05. Refresh your tablet to see the changes."
+  }
+}
