@@ -1,0 +1,6 @@
+{
+  "components": [
+    { "id": "server", "version": "1.13" },
+    { "id": "html", "version": "1.13" }
+  ]
+}
